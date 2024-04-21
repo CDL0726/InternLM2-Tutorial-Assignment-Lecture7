@@ -79,7 +79,7 @@ OpenCompass采取客观评测与主观评测相结合的方法。
 - 中文医疗大模型评测基准
 - 网络安全评测基准（腾讯）
 
-  ![](./opencompass6.png)
+![](./opencompass6.png)
    
 
 # 第7课 作业
