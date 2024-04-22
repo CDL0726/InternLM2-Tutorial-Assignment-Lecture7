@@ -8,6 +8,8 @@
 
 # 第7课 笔记  
 
+# 理论    
+
 ## 为什么要研究大模型的评测？    
 
 - 研究评测对于我们全面了解大型语言模型的优势和限制至关重要。
@@ -29,6 +31,21 @@
 
 opencompass是Meta官方指定的唯一国产大模型测评工具。
 
+## 评测对象    
+
+本算法库的主要评测对象为语言大模型与多模态大模型。我们以语言大模型为例介绍评测的具体模型类型。    
+  - 基座模型：一般是经过海量的文本数据以自监督学习的方式进行训练获得的模型（如OpenAI的GPT-3，Meta的LLaMA），往往具有强大的文字续写能力。
+  - 对话模型：一般是在的基座模型的基础上，经过指令微调或人类偏好对齐获得的模型（如OpenAI的ChatGPT、上海人工智能实验室的书生·浦语），能理解人类指令，具有较强的对话能力。
+
+## 工具架构    
+
+![](./opencompass7.png)    
+
+- 模型层：大模型评测所涉及的主要模型种类，OpenCompass以基座模型和对话模型作为重点评测对象。
+- 能力层：OpenCompass从本方案从通用能力和特色能力两个方面来进行评测维度设计。在模型通用能力方面，从语言、知识、理解、推理、安全等多个能力维度进行评测。在特色能力方面，从长文本、代码、工具、知识增强等维度进行评测。
+- 方法层：OpenCompass采用客观评测与主观评测两种评测方式。客观评测能便捷地评估模型在具有确定答案（如选择，填空，封闭式问答等）的任务上的能力，主观评测能评估用户对模型回复的真实满意度，OpenCompass采用基于模型辅助的主观评测和基于人类反馈的主观评测两种方式。
+- 工具层：OpenCompass提供丰富的功能支持自动化地开展大语言模型的高效评测。包括分布式评测技术，提示词工程，对接评测数据库，评测榜单发布，评测报告生成等诸多功能。
+  
 OpenCompass 司南 的开源发展历程如下：    
 
 ![](./opencompass2.png)  
@@ -81,5 +98,57 @@ OpenCompass采取客观评测与主观评测相结合的方法。
 
 ![](./opencompass6.png)
    
+# 实战    
+
+## 1. 环境配置    
+
+### 1.1 创建开发机和conda环境
+
+界面选择镜像为 `Cuda11.7-conda`，并选择 GPU 为`10% A100`。    
+
+### 1.2 面向GPU的conda环境安装    
+
+```
+studio-conda -o internlm-base -t opencompass
+source activate opencompass
+git clone -b 0.2.4 https://github.com/open-compass/opencompass
+cd opencompass
+pip install -e .
+```
+
+如果pip install -e .安装未成功,请运行:`pip install -r requirements.txt`    
+
+有部分第三方功能,如代码能力基准测试 Humaneval 以及 Llama格式的模型评测,可能需要额外步骤才能正常运行，如需评测，详细步骤请参考安装指南。    
+
+### 1.3 数据准备    
+
+解压评测数据集到 data/ 处，将会在opencompass下看到data文件夹：        
+```
+cp /share/temp/datasets/OpenCompassData-core-20231110.zip /root/opencompass/
+unzip OpenCompassData-core-20231110.zip
+```
+
+### 1.4 查看支持的数据集和模型    
+
+列出所有跟 internlm 及 ceval 相关的配置    
+
+```
+python tools/list_configs.py internlm ceval
+```
+
+将会看到    
+
+![](./opencompass9.png)    
+
+### 1.5 启动评测 (10% A100 8GB 资源)    
+
+确保按照上述步骤正确安装 OpenCompass 并准备好数据集后，可以通过以下命令评测 InternLM2-Chat-1.8B 模型在 C-Eval 数据集上的性能。由于 OpenCompass 默认并行启动评估过程，我们可以在第一次运行时以 --debug 模式启动评估，并检查是否存在问题。在 --debug 模式下，任务将按顺序执行，并实时打印输出。   
+
+```
+python run.py --datasets ceval_gen --hf-path /share/new_models/Shanghai_AI_Laboratory/internlm2-chat-1_8b --tokenizer-path /share/new_models/Shanghai_AI_Laboratory/internlm2-chat-1_8b --tokenizer-kwargs padding_side='left' truncation='left' trust_remote_code=True --model-kwargs trust_remote_code=True device_map='auto' --max-seq-len 1024 --max-out-len 16 --batch-size 2 --num-gpus 1 --debug
+```
+
+
+
 
 # 第7课 作业
