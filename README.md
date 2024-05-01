@@ -113,10 +113,15 @@ studio-conda -o internlm-base -t opencompass
 source activate opencompass
 git clone -b 0.2.4 https://github.com/open-compass/opencompass
 cd opencompass
-pip install -e .
+pip install -v -e .
 ```
 
-如果pip install -e .安装未成功,请运行:`pip install -r requirements.txt`    
+补充安装：
+```
+pip install -r requirements.txt
+pip install protobuf
+```   
+![](./opencompass10.png)  
 
 有部分第三方功能,如代码能力基准测试 Humaneval 以及 Llama格式的模型评测,可能需要额外步骤才能正常运行，如需评测，详细步骤请参考安装指南。    
 
@@ -124,29 +129,62 @@ pip install -e .
 
 解压评测数据集到 data/ 处，将会在opencompass下看到data文件夹：        
 ```
+cd /root/opencompass
 cp /share/temp/datasets/OpenCompassData-core-20231110.zip /root/opencompass/
 unzip OpenCompassData-core-20231110.zip
 ```
 
 ### 1.4 查看支持的数据集和模型    
 
+解压评测数据集到 data/ 处   
+```
+cd /root/opencompass
+cp /share/temp/datasets/OpenCompassData-core-20231110.zip /root/opencompass/
+unzip OpenCompassData-core-20231110.zip
+rm OpenCompassData-core-20231110.zip
+```
+![](./opencompass11.png)     
+
+
 列出所有跟 internlm 及 ceval 相关的配置    
 
 ```
+cd /root/opencompass
 python tools/list_configs.py internlm ceval
 ```
 
 将会看到    
 
-![](./opencompass9.png)    
+![](./opencompass9.1.png)   
+![](./opencompass9.2.png)   
 
 ### 1.5 启动评测 (10% A100 8GB 资源)    
 
 确保按照上述步骤正确安装 OpenCompass 并准备好数据集后，可以通过以下命令评测 InternLM2-Chat-1.8B 模型在 C-Eval 数据集上的性能。由于 OpenCompass 默认并行启动评估过程，我们可以在第一次运行时以 --debug 模式启动评估，并检查是否存在问题。在 --debug 模式下，任务将按顺序执行，并实时打印输出。   
 
 ```
-python run.py --datasets ceval_gen --hf-path /share/new_models/Shanghai_AI_Laboratory/internlm2-chat-1_8b --tokenizer-path /share/new_models/Shanghai_AI_Laboratory/internlm2-chat-1_8b --tokenizer-kwargs padding_side='left' truncation='left' trust_remote_code=True --model-kwargs trust_remote_code=True device_map='auto' --max-seq-len 1024 --max-out-len 16 --batch-size 2 --num-gpus 1 --debug
+cd /root/opencompass
+
+export MKL_SERVICE_FORCE_INTEL=1
+#或
+export MKL_THREADING_LAYER=GNU
+
+python run.py \
+--datasets ceval_gen \
+--hf-path /share/new_models/Shanghai_AI_Laboratory/internlm2-chat-1_8b \  # HuggingFace 模型路径
+--tokenizer-path /share/new_models/Shanghai_AI_Laboratory/internlm2-chat-1_8b \  # HuggingFace tokenizer 路径（如果与模型路径相同，可以省略）
+--tokenizer-kwargs padding_side='left' truncation='left' trust_remote_code=True \  # 构建 tokenizer 的参数
+--model-kwargs device_map='auto' trust_remote_code=True \  # 构建模型的参数
+--max-seq-len 1024 \  # 模型可以接受的最大序列长度
+--max-out-len 16 \  # 生成的最大 token 数
+--batch-size 2  \  # 批量大小
+--num-gpus 1  \  # 运行模型所需的 GPU 数量
+
 ```
+运行命令：   
+
+```python run.py --datasets ceval_gen --hf-path /share/new_models/Shanghai_AI_Laboratory/internlm2-chat-1_8b --tokenizer-path /share/new_models/Shanghai_AI_Laboratory/internlm2-chat-1_8b --tokenizer-kwargs padding_side='left' truncation='left' trust_remote_code=True --model-kwargs trust_remote_code=True device_map='auto' --max-seq-len 1024 --max-out-len 16 --batch-size 2 --num-gpus 1 --debug```
+测评结果：        
 
 
 
