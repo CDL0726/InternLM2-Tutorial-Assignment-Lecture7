@@ -195,3 +195,11 @@ python run.py --datasets ceval_gen --hf-path /share/new_models/Shanghai_AI_Labor
 
 # 第7课 作业   
 
+## 基础作业    
+
+- 使用 OpenCompass 评测 internlm2-chat-1_8b 模型在 C-Eval 数据集上的性能
+  - Dennis作业 详见 笔记1.1 - 1.5 评测结果如下:
+    
+![](./opencompass12.2.png)
+![](./opencompass12.3.png)
+       
