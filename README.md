@@ -207,10 +207,99 @@ python run.py --datasets ceval_gen --hf-path /share/new_models/Shanghai_AI_Labor
 
 - 将自定义数据集提交至OpenCompass官网
 
-提交地址：https://hub.opencompass.org.cn/dataset-submit?lang=[object%20Object]
+提交地址：https://hub.opencompass.org.cn/dataset-submit?lang=[object%20Object]    
 
 提交指南：https://mp.weixin.qq.com/s/_s0a9nYRye0bmqVdwXRVCg    
-Tips：不强制要求配置数据集对应榜单（ leaderboard.xlsx ），可仅上传 README_OPENCOMPASS.md 文档    
+Tips：不强制要求配置数据集对应榜单（ leaderboard.xlsx ），可仅上传 README_OPENCOMPASS.md 文档        
+
+### 1. 第一步 数据基本信息 
+
+- 填写数据集基本信息 垂类领域 医疗保健知识
+  
+[HealthAgent](https://hub.opencompass.org.cn/dataset-config/HealthcareAgent)
+  
+![](./opencompass13.png)
+
+### 2. 第二部 配置数据集详细信息    
+
+#### 2.1 创建文件    
+
+创建 `REDME_OPENCOMPASS.md` 用于记录数据集元数据以及 README     
+
+![](./opencompass14.png)    
+
+#### 2.2 配置数据集  
+[README_OPENCOMPASS](https://github.com/CDL0726/README_OPENCOMPASS/blob/main/README.md)   
+
+
+#### 2.3 配置数据集对应榜单    
+
+可参考网页提供的 leaderboard template     
+
+在第1步新建的 leaderboard.xlsx 空白文件中，配置各模型在该数据集上评测的结果信息。    
+
+可填写的内容分为以下5个部分    
+
+**Model**    
+```
+- index：评测模型的索引，用以标识不同模型的评测结果；
+- method：评测的方法；
+- llm_model：语言模型的名称，这是用于处理文本数据的模型部分；
+- vision_model：视觉模型的名称，这是用于处理图像数据的模型部分；
+- model_url：模型的URL链接，可以通过这个链接访问模型的详细信息和源代码；
+- organization：开发或维护该模型的组织名称；
+- parameters：模型的参数数量，通常以亿（B）为单位，表示模型的大小；
+- release_date：模型发布的日期；
+- updated_time：模型最近一次更新的日期；
+- verified：用布尔值区分模型结果是否经过验证；
+- type：这是一个列表，在 template 中，第一个参数表示模型通过何种方式访问，第二个参数表示模型支持的输入输出语言
+```
+
+**Test&Dev**    
+其中 Test 表示测试集，Dev 表示开发集    
+```
+- average: 模型在所有测试集上的平均准确率;
+- LR: 逻辑推理（Logic Reasoning）的准确率;
+- AR: 属性推理（Attribute Reasoning）的准确率;
+- RR: 关系推理（Relation Reasoning）的准确率;
+- FP-S: 单对象细粒度感知（Fine-Grained Perception-Single Instance）的准确率;
+- FP-C: 多对象细粒度感知（Fine-Grained Perception-Cross Instance）的准确率;
+- CP: 粗粒度感知（Coarse Perception）的准确率;
+```
+
+**Dimension Cat**    
+在这一子表中您可以将在测试集以及验证集中使用到的**模型能力指标的英文缩写**，如 LR、AR，对应地写上其英文全称，便于其他用户后续理解。
+
+**Function cfg**   
+
+这一子表中主要是为了**设置数据可视化的参数**    
+
+```
+- histogram：选择是否使用直方图，默认值是T；
+- histogram_label:这一参数是与子表model中type是对应的，如果您选择tag_1，那么直方图标签就是type列表中的第一个元素，同理如果您选择tag_2，那么那么直方图标签就是type列表中的第二个元素，默认值为tag_1；
+- export_figure:选择是否可以导出可视化结果，默认值是T；
+- default_sorting：默认排在第一位的排序方式，您可以指定一项模型能力指标作为默认排序方式，如填写lr，则默认使用lr（逻辑推理）的准确度对模型进行排序；
+- watermark：选择是否留有水印，默认值是T
+```
+
+**CN**    
+
+我们的界面有中英双语，为了用户可以在中文环境下查看可视化的结果，您可以将 leaderboard 表格中出现过的英文与中文对照着填写在这一子表中。用户在网页切换语言时会展示字段对应的中文。    
+
+#### 2.4 上传文件    
+
+![](./opencompass15.png) 
+
+欢迎您将 OpenCompass badge 添加到您 github  的 README.md，便于大家看到您创建的数据集卡片：    
+```
+[![evaluation](./doc/imgs/compass_support.svg)]({DATASET_CARD_URL})
+```
+
+
+
+
+
+
 
 
   
