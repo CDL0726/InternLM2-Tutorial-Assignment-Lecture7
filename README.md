@@ -203,3 +203,15 @@ python run.py --datasets ceval_gen --hf-path /share/new_models/Shanghai_AI_Labor
 ![](./opencompass12.2.png)
 ![](./opencompass12.3.png)
        
+## 进阶作业    
+
+- 将自定义数据集提交至OpenCompass官网
+
+提交地址：https://hub.opencompass.org.cn/dataset-submit?lang=[object%20Object]
+
+提交指南：https://mp.weixin.qq.com/s/_s0a9nYRye0bmqVdwXRVCg
+Tips：不强制要求配置数据集对应榜单（ leaderboard.xlsx ），可仅上传 README_OPENCOMPASS.md 文档    
+
+
+  
+  
