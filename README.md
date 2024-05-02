@@ -1,5 +1,5 @@
 # InternLM2-Tutorial-Assignment-Lecture7      
-# OpenCompass 司南 大模型评测实战    
+# 第七课 OpenCompass 司南 大模型评测实战    
 2024.4.19   OpenCompass 贡献者曹茂松、刘卓鑫    
 
 [第7课 视频](https://www.bilibili.com/video/BV1Pm41127jU/)    
@@ -209,7 +209,7 @@ python run.py --datasets ceval_gen --hf-path /share/new_models/Shanghai_AI_Labor
 
 提交地址：https://hub.opencompass.org.cn/dataset-submit?lang=[object%20Object]
 
-提交指南：https://mp.weixin.qq.com/s/_s0a9nYRye0bmqVdwXRVCg
+提交指南：https://mp.weixin.qq.com/s/_s0a9nYRye0bmqVdwXRVCg    
 Tips：不强制要求配置数据集对应榜单（ leaderboard.xlsx ），可仅上传 README_OPENCOMPASS.md 文档    
 
 
